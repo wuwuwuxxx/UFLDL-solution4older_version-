@@ -62,26 +62,26 @@ groundTruth = full(sparse(labels, 1:M, 1));
 %                match exactly that of the size of the matrices in stack.
 %
 layers = numel(stack);
-
+%forward
 z{1} = stack{1}.w * data + repmat(stack{1}.b, 1, M);
 a{1} = sigmoid(z{1});
 for j = 2:layers;
     z{j} = stack{j}.w * a{j-1} + repmat(stack{j}.b, 1, M);
     a{j} = sigmoid(z{j});
 end
-
+%forward(get output layer)
 zn = (softmaxTheta * a{layers});
 p = bsxfun(@rdivide, exp(zn), sum(exp(zn)));
 h = log(p) .* groundTruth;
+%get cost
 cost = -mean(sum(h)) + (lambda / 2) * norm(softmaxTheta, 'fro')^2;
-
-%back
+%back propagation
 delta{layers+1} = -(groundTruth - p);
 delta{layers} = (softmaxTheta' * delta{layers+1}) .* sig_prime(z{layers});
 for j = layers:-1:2;
     delta{j-1} = ((stack{j}.w)' * delta{j}) .* sig_prime(z{j-1});
 end
-
+%get deltaW and deltaB
 softmaxThetaGrad = (delta{layers+1} * a{layers}') / M + lambda*softmaxTheta;
 for j = layers:-1:2;
     stackgrad{j}.w = (delta{j} * a{j-1}') / M;

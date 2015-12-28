@@ -20,6 +20,7 @@ numgrad = zeros(size(theta));
 
 epsilon = zeros(size(theta));
 EPS = 0.0001;
+%computer gradient one by one
 for i = 1:size(theta, 1)
     epsilon(i) = EPS;
     numgrad(i) = (J(theta + epsilon) - J(theta - epsilon))/ (2*EPS);

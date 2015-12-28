@@ -22,10 +22,11 @@ groundTruth = full(sparse(labels, 1:numCases, 1));
 %  Instructions: Compute the cost and gradient for softmax regression.
 %                You need to compute thetagrad and cost.
 %                The groundTruth matrix might come in handy.
-h = exp(theta * data);
-p = bsxfun(@rdivide, h, sum(h));
-h = log(p) .* groundTruth;
-cost = -mean(sum(h)) + (lambda / 2) * norm(theta, 'fro')^2;
+z = theta * data;
+t = exp(z);
+p = bsxfun(@rdivide, t, sum(t));
+j = log(p) .* groundTruth;
+cost = -mean(sum(j)) + (lambda / 2) * norm(theta, 'fro')^2;
 thetagrad = -((groundTruth - p) * data' / numCases) + lambda * theta;
 
 

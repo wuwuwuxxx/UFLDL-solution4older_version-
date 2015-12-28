@@ -44,21 +44,22 @@ b2grad = zeros(size(b2));
 
 [~, n] = size(rawdata);
 data = rawdata;
+%forward and save z&a for back propagation
 Z1 = W1* data + repmat(b1, 1, n);
 A1 = sigmoid(Z1);
 Z2 = W2 * A1 + repmat(b2, 1, n);
 A2 = sigmoid(Z2);
-
+%sparse parameter
 p_mean = sum(A1, 2)/n;
-
+%cost
 cost = cost_fun(rawdata - A2);
 sparse = sparsityParam*log(sparsityParam./p_mean)+(1-sparsityParam)*log((1-sparsityParam)./(1-p_mean));
 cost = cost / n + lambda/2*(norm(W1, 'fro')^2 + norm(W2, 'fro')^2) + beta * sum(sparse);
-
+%back propagation
 delta3 = -(rawdata - A2) .* sig_prime(Z2);
 p = -sparsityParam./p_mean + (1-sparsityParam)./(1-p_mean);
 delta2 = (W2'*delta3 + beta * repmat(p, [1 n])) .* sig_prime(Z1);
-
+%update W and b
 delta_w2 = delta3 * A1';
 delta_b2 = sum(delta3, 2);
 delta_w1 = delta2 * rawdata';
@@ -87,7 +88,7 @@ function sigm = sigmoid(x)
   
     sigm = 1.0 ./ (1.0 + exp(-x));
 end
-
+%prime of the sigmoid function
 function prime = sig_prime(x)
 
     prime = sigmoid(x).*(1-sigmoid(x));

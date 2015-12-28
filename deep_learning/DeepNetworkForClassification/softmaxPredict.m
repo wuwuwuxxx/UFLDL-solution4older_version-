@@ -14,11 +14,8 @@ theta = softmaxModel.optTheta;  % this provides a numClasses x inputSize matrix
 %% ---------- YOUR CODE HERE --------------------------------------
 %  Instructions: Compute pred using theta assuming that the labels start 
 %                from 1.
-
-%forward
 h = exp(theta * data);
 p = bsxfun(@rdivide, h, sum(h));
-%get max prediction positon, saved in pred
 [~, pred] = max(p);
 
 
