@@ -106,6 +106,7 @@ ZCAWhite = u * diag(1 ./ sqrt(diag(s) + epsilon)) * u';
 patches = ZCAWhite * patches;
 
 displayColorNetwork(patches(:, 1:100));
+print -djpeg patches.jpg
 
 %% STEP 2c: Learn features
 %  You will now use your sparse autoencoder (with linear decoder) to learn
@@ -138,3 +139,4 @@ fprintf('Saved\n');
 W = reshape(optTheta(1:visibleSize * hiddenSize), hiddenSize, visibleSize);
 b = optTheta(2*hiddenSize*visibleSize+1:2*hiddenSize*visibleSize+hiddenSize);
 displayColorNetwork( (W*ZCAWhite)');
+print -djpeg weights.jpg

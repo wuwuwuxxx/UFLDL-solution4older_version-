@@ -222,6 +222,7 @@ softmaxModel = softmaxTrain(numel(pooledFeaturesTrain) / numTrainImages,...
 %  Now you will test your trained classifer against the test images
 
 softmaxX = permute(pooledFeaturesTest, [1 3 4 2]);
+load stlTestSubset.mat
 softmaxX = reshape(softmaxX, numel(pooledFeaturesTest) / numTestImages, numTestImages);
 softmaxY = testLabels;
 
